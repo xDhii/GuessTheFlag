@@ -148,8 +148,10 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0 ... 2)
-        tappedFlag = nil
-        animationScale = 1.0
+        withAnimation {
+            tappedFlag = nil
+            animationScale = 1.0            
+        }
     }
 }
 
