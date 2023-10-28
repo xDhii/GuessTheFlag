@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct FlagImage: View {
     var country: String
 
@@ -44,6 +43,10 @@ struct ContentView: View {
     @State private var showingScore = false
     @State private var gameFinished = false
 
+    @State private var animationAmount = 0.0
+    @State private var animationScale = 1.0
+    @State private var tappedFlag: Int?
+
     var body: some View {
         ZStack {
             RadialGradient(stops: [
@@ -57,9 +60,6 @@ struct ContentView: View {
                 Spacer()
 
                 titleText(text: "Guess the Flag")
-//                Text("Guess the Flag")
-//                    .font(.largeTitle.weight(.bold))
-//                    .foregroundColor(.white)
 
                 VStack(spacing: 15) {
                     VStack {
@@ -74,9 +74,21 @@ struct ContentView: View {
                     ForEach(0 ..< 3) { number in
                         Button {
                             flagTapped(number)
+                            withAnimation {
+                                animationAmount += 360
+                                animationScale -= 0.5
+                            }
                         } label: {
                             FlagImage(country: countries[number])
                         }
+                        .rotation3DEffect(
+                            .degrees(number == tappedFlag ? animationAmount : 0),
+                            axis: (x: 0.0, y: 1.0, z: 0.0)
+                        )
+                        .opacity(number == tappedFlag ? 1.0 : (tappedFlag == nil ? 1.0 : 0.25))
+                        .scaleEffect(
+                            number != tappedFlag && tappedFlag != nil ? withAnimation { animationScale } : 1.0
+                        )
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -117,7 +129,7 @@ struct ContentView: View {
             scoreTitle = "Wrong"
             messageUser = "Ops! This flag is \(countries[correctAnswer]). You choose \(countries[number]) instead."
         }
-
+        tappedFlag = number
         print(questionNumber)
         questionNumber += 1
         showingScore = true
@@ -136,6 +148,8 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0 ... 2)
+        tappedFlag = nil
+        animationScale = 1.0
     }
 }
 
