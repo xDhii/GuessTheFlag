@@ -71,14 +71,14 @@ struct ContentView: View {
                         blue: Double.random(in: 0.0 ... 1.0)),
                     location: 1.3),
                 .init(color:
-                        Color(
-                            red: Double.random(in: 0.0 ... 0.6),
-                            green: Double.random(in: 0.0 ... 0.3),
-                            blue: Double.random(in: 0.0 ... 1.0)),
-                      location: 1.3),
+                    Color(
+                        red: Double.random(in: 0.0 ... 0.6),
+                        green: Double.random(in: 0.0 ... 0.3),
+                        blue: Double.random(in: 0.0 ... 1.0)),
+                    location: 1.3),
             ], center: .top,
-                           startRadius: 200,
-                           endRadius: 700)
+            startRadius: 200,
+            endRadius: 700)
                 .ignoresSafeArea()
 
             VStack {
