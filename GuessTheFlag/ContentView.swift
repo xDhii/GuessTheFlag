@@ -21,14 +21,20 @@ struct Title: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.largeTitle)
-            .foregroundStyle(.blue)
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 15)
+            .padding(.vertical, 5)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 10))
     }
 }
 
 extension View {
     func titleText(text: String) -> some View {
-        Text(text)
-            .modifier(Title())
+        ZStack {
+            Text(" \(text) ")
+                .modifier(Title())
+        }
     }
 }
 
@@ -50,10 +56,29 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             RadialGradient(stops: [
-                .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.1),
-                .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.5),
-                .init(color: Color(red: 0.9, green: 0.7, blue: 0.2), location: 0.8),
-            ], center: .top, startRadius: 200, endRadius: 700)
+                .init(color:
+                    Color(red: Double.random(in: 0.0 ... 1.0),
+                          green: Double.random(in: 0.0 ... 1.0),
+                          blue: Double.random(in: 0.0 ... 1.0)),
+                    location: 0.1),
+                .init(color:
+                    Color(.cyan),
+                    location: 0.7),
+                .init(color:
+                    Color(
+                        red: Double.random(in: 0.0 ... 0.6),
+                        green: Double.random(in: 0.0 ... 0.3),
+                        blue: Double.random(in: 0.0 ... 1.0)),
+                    location: 1.3),
+                .init(color:
+                        Color(
+                            red: Double.random(in: 0.0 ... 0.6),
+                            green: Double.random(in: 0.0 ... 0.3),
+                            blue: Double.random(in: 0.0 ... 1.0)),
+                      location: 1.3),
+            ], center: .top,
+                           startRadius: 200,
+                           endRadius: 700)
                 .ignoresSafeArea()
 
             VStack {
@@ -109,7 +134,6 @@ struct ContentView: View {
         }
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
-
         } message: {
             Text(messageUser)
         }
@@ -150,7 +174,7 @@ struct ContentView: View {
         correctAnswer = Int.random(in: 0 ... 2)
         withAnimation {
             tappedFlag = nil
-            animationScale = 1.0            
+            animationScale = 1.0
         }
     }
 }
